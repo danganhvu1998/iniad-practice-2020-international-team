@@ -8,20 +8,18 @@
   "scripts": {
     "build": "babel src -d dist --copy-files",
     "lint": "eslint --fix ./src",
-    "dev": "env TZ='Etc/UTC' nodemon --exec babel-node src/server.js",
-    "start": "env TZ='Etc/UTC' node ./dist/server.js",
+    "dev": "nodemon --exec babel-node src/server.js",
+    "start": "node ./dist/server.js",
     "docker:start": "docker-compose up -d",
     "docker:stop": "docker-compose down",
     "docker:clean": "docker-compose down --rmi all",
-    "docker:connect": "docker exec -it shozemi-api /bin/bash",
-    "docker.db:connect": "docker exec -it shozemi-db /bin/bash",
+    "docker:connect": "docker exec -it node-backend /bin/bash",
     "docker:deploy": "git pull origin develop && docker system prune -f && npm run docker:clean && sudo npm run docker:start",
     "docker:deploy:dev": "git pull origin anhvu_develop && docker system prune -f && npm run docker:clean && sudo npm run docker:start",
     "test": "NODE_ENV=local jest --silent",
     "logfulTest": "NODE_ENV=local jest",
     "re-migrate": "cd database && sequelize db:migrate --config '../config/local.json' --env database && sequelize db:seed:all --config '../config/local.json' --env database",
     "re-migrate-dev": "cd database && sequelize db:migrate --config '../config/localDev.json' --env database && sequelize db:seed:all --config '../config/localDev.json' --env database",
-    "re-migrate-production": "cd database && sequelize db:migrate --config '../config/localProduction.json' --env database && sequelize db:seed --seed ./seeders/07-userProduction.js --config '../config/localProduction.json' --env database && sequelize db:seed --seed ./seeders/01-permissions.js --config '../config/localProduction.json' --env database"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",

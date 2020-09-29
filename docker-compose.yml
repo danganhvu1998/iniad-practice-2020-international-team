@@ -1,23 +1,17 @@
-version: '3'
+version: '1'
 services:
   api:
     build:
       context: .
       dockerfile: Dockerfile
-    image: shozemi-api
-    container_name: shozemi-api
+    image: node-backend
+    container_name: node-backend
     restart: always
     environment:
       - NODE_ENV=${NODE_ENV}
-      - DB_NAME=shozemi
-      - DB_USER=shozemi
-      - DB_PASSWORD=tt@1234
-      - DB_HOST=db
-      - DB_PORT=3306
+      - TZ=${TZ}
     networks:
       - api-network
-    links:
-      - db:db
     volumes:
       - ./bin:/usr/src/app/bin
       - ./src:/usr/src/app/src
@@ -25,24 +19,6 @@ services:
       - ${STORAGE_UPLOAD_PATH}:/usr/src/app/public
     ports:
       - '3000:3000'
-    depends_on:
-      - db
-  db:
-    image: mysql:8
-    command: --default-authentication-plugin=mysql_native_password --log-bin-trust-function-creators=1
-    container_name: shozemi-db
-    restart: always
-    networks:
-      - api-network
-    ports:
-      - '3306:3306'
-    volumes:
-      - ${MYSQL_DATADIR}:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: tt@1234
-      MYSQL_DATABASE: shozemi
-      MYSQL_USER: shozemi
-      MYSQL_PASSWORD: tt@1234
 networks:
   api-network:
     driver: bridge
