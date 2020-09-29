@@ -26,6 +26,30 @@ module.exports = {
             password: bCrypt.hashSync('initPass', bCrypt.genSaltSync(8), null),
             createdAt: new Date(),
             updatedAt: new Date(),
+        },{
+            fullName: 'XY',
+            email: 's1f101800104@iniad.org',
+            password: bCrypt.hashSync('initPass', bCrypt.genSaltSync(8), null),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },{
+            fullName: 'SY',
+            email: 's1f101800205@iniad.org',
+            password: bCrypt.hashSync('initPass', bCrypt.genSaltSync(8), null),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },{
+            fullName: 'Adhim',
+            email: 's1f101800665@iniad.org',
+            password: bCrypt.hashSync('initPass', bCrypt.genSaltSync(8), null),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },{
+            fullName: 'Duy',
+            email: 's1f101810048@iniad.org',
+            password: bCrypt.hashSync('initPass', bCrypt.genSaltSync(8), null),
+            createdAt: new Date(),
+            updatedAt: new Date(),
         },
     ], {});
   },
