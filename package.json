@@ -19,7 +19,7 @@
     "test": "NODE_ENV=local jest --silent",
     "logfulTest": "NODE_ENV=local jest",
     "re-migrate": "cd database && sequelize db:migrate --config '../config/local.json' --env database && sequelize db:seed:all --config '../config/local.json' --env database",
-    "re-migrate-dev": "cd database && sequelize db:migrate --config '../config/localDev.json' --env database && sequelize db:seed:all --config '../config/localDev.json' --env database",
+    "re-migrate-dev": "cd database && sequelize db:migrate --config '../config/localDev.json' --env database && sequelize db:seed:all --config '../config/localDev.json' --env database"
   },
   "dependencies": {
     "@hapi/joi": "^15.1.1",
