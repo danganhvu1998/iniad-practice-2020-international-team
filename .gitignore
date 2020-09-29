@@ -1,0 +1,27 @@
+.DS_Store
+.history
+node_modules/
+/dist/
+/logs/
+/logsDockerfile/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.env
+
+docker-compose.override.yml
+/config/local*.json
+/config/production.json
+/video_dir
+/data_dir
+/public
+/testFolder
+/sql_cmd

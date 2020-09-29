@@ -1,0 +1,24 @@
+{
+  "database": {
+    "username": "root",
+    "password": "root",
+    "database": "iniadProject",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "auth": {
+    "secret_access_token": "our_secret_access_token",
+    "secret_refresh_access_token": "our_refresh_secret_access_token",
+    "secret_access_token_expire": 300,
+    "secret_refresh_access_token_expire": 86400
+  },
+  "google_authentication": {
+    "client_id": "superFakeOne",
+    "client_secret": "ThisIsAFakeSecret"
+  },
+  "slack_alarm": {
+    "identity": "UNKNOWN Localhost",
+    "postWebhook": "https://wrong",
+    "isDev": false
+  }
+}

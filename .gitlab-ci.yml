@@ -1,0 +1,23 @@
+image: node:latest
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y ruby-dev
+  - gem install dpl
+
+stages:
+  - develop
+
+dev:
+  type: deploy
+  stage: develop
+  image: ruby:latest
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_DEVELOPMENT --api-key=$HEROKU_API_KEY
+  only:
+    - develop
+  tags:
+    - docker
+
+
+

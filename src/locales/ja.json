@@ -1,0 +1,4 @@
+{
+	"auth.login.wrongEmailOrPassword": "メールアドレスまたはパスワードが正しくありません。",
+	"auth.login.oldPasswordIsNotCorrect": "auth.login.oldPasswordIsNotCorrect"
+}

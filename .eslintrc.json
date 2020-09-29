@@ -1,0 +1,21 @@
+{
+  "extends": ["airbnb"],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "func-names": ["error", "never"],
+    "max-len": ["error", { "comments": 200, "code": 150 }],
+    "indent": ["error", 4],
+    "import/prefer-default-export": ["off"],
+    "no-param-reassign": ["error", { "props": false }],
+    "no-await-in-loop": "off",
+    "no-underscore-dangle": ["error", { "allow": ["__"] } ],
+    "no-unused-vars": [1]
+  },
+  "env": {
+    "jest": true
+  }
+}
