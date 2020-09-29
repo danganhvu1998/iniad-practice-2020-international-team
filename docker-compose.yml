@@ -1,4 +1,4 @@
-version: '1'
+version: '3'
 services:
   api:
     build:
@@ -15,8 +15,6 @@ services:
     volumes:
       - ./bin:/usr/src/app/bin
       - ./src:/usr/src/app/src
-      - ${LOGS_DIR}:/usr/src/app/logs
-      - ${STORAGE_UPLOAD_PATH}:/usr/src/app/public
     ports:
       - '3000:3000'
 networks:
