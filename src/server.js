@@ -7,7 +7,9 @@
 
 const debug = require('debug')('shozemi-web-app:server');
 const http = require('http');
+const SOCKET = require('socket.io');
 const app = require('./app');
+const { socketAction } = require('./middleware/socket.io');
 
 /**
  * Get port from environment and store in Express.
@@ -21,6 +23,19 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+export const io = SOCKET.listen(server, {
+    handlePreflightRequest: (req, res) => {
+        const headers = {
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Origin': '*', // or the specific origin you want to give access to,
+            'Access-Control-Allow-Credentials': true,
+        };
+        res.writeHead(200, headers);
+        res.end();
+    },
+});
+
+io.on('connection', (socket) => socketAction(socket));
 
 /**
  * Listen on provided port, on all network interfaces.
