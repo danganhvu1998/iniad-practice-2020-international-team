@@ -26,8 +26,8 @@ app.use(cookieParser());
 // cors  configuration
 const corsOptions = {
     origin: '*',
-    methods: ['POST', 'GET', 'PUT', 'PATCH', 'DELETE'],
-    exposedHeaders: ['Content-Length', 'Authorization', 'Accept-Language'],
+    methods: '*',
+    exposedHeaders: '*',
 
 };
 
