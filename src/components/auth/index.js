@@ -13,6 +13,8 @@ const express = require('express');
 module.exports = (app) => {
     const router = express.Router();
     router.post('/test-api', testFunctionValidator, testFunction);
+    // When POST to /api/test-api, first call testFunctionValidator then testFunction. In testFunction (in authController),
+    // it will call a function in authService to connect to mysql via models
     router.post('/login', loginValidator, login);
     router.post('/google-login', googleLoginValidator, loginWithGoogle);
     router.post('/refresh-token', (req, res, next) => { req.authorization_type = 'refresh'; next(); }, authenticate, refreshToken);
