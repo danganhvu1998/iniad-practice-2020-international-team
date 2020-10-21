@@ -163,3 +163,11 @@ export async function changePassword(req, res) {
         return logSystemError(res, error, 'authController - changePassword');
     }
 }
+
+export async function testFunction(req, res) {
+    try {
+        return res.json(req.body);
+    } catch (error) {
+        return logSystemError(res, error, 'authController - changePassword');
+    }
+}

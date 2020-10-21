@@ -1,15 +1,18 @@
 import { authenticate } from '../../middleware/auth';
 import {
     login, getProfile, updateProfile, changePassword, refreshToken, loginWithGoogle, getLoginLink,
+    testFunction,
 } from './authController';
 import {
     loginValidator, profileValidator, passwordValidator, googleLoginValidator, getLoginLinkValidator,
+    testFunctionValidator,
 } from './authValidator';
 
 const express = require('express');
 
 module.exports = (app) => {
     const router = express.Router();
+    router.post('/test-api', testFunctionValidator, testFunction);
     router.post('/login', loginValidator, login);
     router.post('/google-login', googleLoginValidator, loginWithGoogle);
     router.post('/refresh-token', (req, res, next) => { req.authorization_type = 'refresh'; next(); }, authenticate, refreshToken);

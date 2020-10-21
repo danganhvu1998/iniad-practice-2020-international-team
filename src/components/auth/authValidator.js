@@ -22,6 +22,22 @@ export function loginValidator(req, res, next) {
     next();
 }
 
+export function testFunctionValidator(req, res, next) {
+    const { body } = req;
+    const validSchema = Joi.object().keys({
+        abc: Joi.string().required(),
+        bcd: Joi.number().optional(),
+    });
+    const result = Joi.validate(body, validSchema);
+    req.body.changedByMiddleware = 'HELLO FROM MIDDLEWARE';
+
+    if (result.error) {
+        res.json(respondWithError(ErrorCodes.ERROR_CODE_INVALID_PARAMETER, result.error.message, result.error.details));
+        return;
+    }
+    next();
+}
+
 export function googleLoginValidator(req, res, next) {
     const { body } = req;
     const validSchema = Joi.object().keys({
