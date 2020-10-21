@@ -12,7 +12,7 @@ const express = require('express');
 
 module.exports = (app) => {
     const router = express.Router();
-    router.post('/test-api', testFunctionValidator, testFunction);
+    router.post('/test-api', testFunctionValidator, (req, res, next) => { req.body.addedField = 'DONT MIND THIS'; next(); }, testFunction);
     router.post('/login', loginValidator, login);
     router.post('/google-login', googleLoginValidator, loginWithGoogle);
     router.post('/refresh-token', (req, res, next) => { req.authorization_type = 'refresh'; next(); }, authenticate, refreshToken);
