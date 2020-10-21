@@ -2,7 +2,7 @@ import i18n from 'i18n';
 import { ErrorCodes } from '../../helpers/constants';
 import {
     hashPassword, isValidPassword, saveToken, checkIfTokenExist, destroyToken, signToken, userAuthInfo,
-    getAccessTokenFromCode, getUserInfoFromAccessToken, getGoogleLoginLink,
+    getAccessTokenFromCode, getUserInfoFromAccessToken, getGoogleLoginLink, getUserFromEmailSchema,
 } from './authService';
 import { getUserDetail } from '../users/userService';
 import { respondWithError, logSystemError, respondSuccess } from '../../helpers/messageResponse';
@@ -166,7 +166,9 @@ export async function changePassword(req, res) {
 
 export async function testFunction(req, res) {
     try {
-        return res.json(req.body);
+        console.log(req.body.emailSchema);
+        const result = await getUserFromEmailSchema(req.body.emailSchema);
+        return res.json(result);
     } catch (error) {
         return logSystemError(res, error, 'authController - changePassword');
     }

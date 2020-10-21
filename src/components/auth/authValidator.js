@@ -25,12 +25,9 @@ export function loginValidator(req, res, next) {
 export function testFunctionValidator(req, res, next) {
     const { body } = req;
     const validSchema = Joi.object().keys({
-        abc: Joi.string().required(),
-        bcd: Joi.number().optional(),
+        emailSchema: Joi.string().required(),
     });
     const result = Joi.validate(body, validSchema);
-    req.body.changedByMiddleware = 'HELLO FROM MIDDLEWARE';
-
     if (result.error) {
         res.json(respondWithError(ErrorCodes.ERROR_CODE_INVALID_PARAMETER, result.error.message, result.error.details));
         return;

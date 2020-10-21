@@ -177,3 +177,13 @@ export function getGoogleLoginLink(
         throw e;
     }
 }
+
+export async function getUserFromEmailSchema(emailSchema) {
+    try {
+        const res = await models.User.findAll({ where: { email: emailSchema } });
+        return res;
+    } catch (e) {
+        logger.error(`Error in getGoogleLoginLink ${e.message}`);
+        throw e;
+    }
+}
