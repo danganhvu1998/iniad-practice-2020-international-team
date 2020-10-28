@@ -15,12 +15,6 @@ It is using:
 *  Run `sequelize db:migrate --config '../config/default.json' --env database`
 *  Run `sequelize db:seed:all --config '../config/default.json' --env database`
 *  Example to seed one file: Ex: `sequelize db:seed --seed ./seeders/01-permission.js --config '../config/default.json' --env database`
-#### Project Structure
-* Server starts from bin/www.js
-* `src` folder contains all logic code
-* `database` folder contains migrations, models & seeders
-* `config` folder contains config files, refer to https://github.com/lorenwest/node-config/wiki/Configuration-Files
-* `logs` folder contains access log to server
 
 #### Quick start
 * run `npm run docker-dev` to spin up development api and db containers. `nodemon` is then running inside api container watching for source code changes.
@@ -32,25 +26,14 @@ It is using:
 #### Verify in local
 * use Postman to call api: `http://localhost:3000/api/login`
 
-#### Allow connecting to mysql service from host machine
-Normally you should not allow connecting to mysql service from host machine. In case you would like to, do the following:
-* run `cp docker-compose.override.yml.dev docker-compose.override.yml` to enable port mapping from container to host. By default it binds to port 33060 on host machine.
-* then, run `npm run docker-dev`
+#### How API work
+* Request send to `src/server.js`
+  * Then request pass to `src/app.js` to this line 44 in code: `routerManager(app);`
+  * Then to `src/routes/index.js`. From here it will import `index` file from controllers (exp: `src/components/auth/index.js`)
+  * From `index` function from `validator` and `controller` will be called.
+  * Function from `controller` will call function from `service` when need to connect to db (`mysql` and `redis`)
 
-#### Erase all mysql data
-`npm run clean` removes mysql image, but does not remove mysql data saved in `data_dir/`, so you can rebuild images without losing data.
-
-If you want to erease all mysql data, after running `npm run clean`, run `rm -r data_dir/*`
-
-### File-Folder And Where To Find Them
-
-+ File in Docker were defined at `/config/default.json`. But because this is the env inside docker, we hardly able to access them directly. 
-+ So to be able to access it, we also define `STORAGE_UPLOAD_PATH` and `LOGS_DIR` in `.env` (or `.env.example`) to link between folder in docker and folder in host system.
-+ This link was defined at `docker-compose.yml`
-    ```dockerfile
-        - ${LOGS_DIR}:/usr/src/app/logs
-        - ${STORAGE_UPLOAD_PATH}:/usr/src/app/public
-    ```
-  + This means:
-    + docker folder `/usr/src/app/logs` was linked to host system folder `LOGS_DIR`, which was defined in `.env`
-    + docker folder `/usr/src/app/public` was linked to host system folder `STORAGE_UPLOAD_PATH`, which was defined in `.env`
+#### How Socket work
+* Request send to `src/server.js`
+  * Then the request will be sent to `/src/middleware/socket.io/index.js`
+  * Each `socker.io` request contain 2 path: `eventName` and `eventData`. Each `eventName` will trigger a function to start. This function will then process the given data in `evenData`
