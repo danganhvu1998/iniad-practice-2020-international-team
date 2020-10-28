@@ -10,13 +10,13 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - TZ=${TZ}
-    networks:
-      - api-network
     volumes:
       - ./bin:/usr/src/app/bin
       - ./src:/usr/src/app/src
     ports:
       - '3000:3000'
-networks:
-  api-network:
-    driver: bridge
+  redis:
+    image: "redis:alpine"
+    hostname: redis
+    ports:
+      - "6379:6379"
