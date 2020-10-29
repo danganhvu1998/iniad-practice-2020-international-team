@@ -9,10 +9,16 @@ client.on('error', (error) => {
 
 const getAsync = promisify(client.get).bind(client);
 const setAsync = promisify(client.set).bind(client);
+const keysAsync = promisify(client.keys).bind(client);
 
 async function test() {
-    await setAsync('abc', 'cde');
-    console.log(await getAsync('abc'));
+    await setAsync('abc0', 'cde');
+    await setAsync('abc1', 'cde');
+    await setAsync('abc2', 'cde');
+    console.log(await keysAsync('*2'));
+    console.log(await keysAsync('ab*'));
+    console.log(await getAsync('abc0'));
+    console.log(await getAsync('abc3'));
 }
 
 test();

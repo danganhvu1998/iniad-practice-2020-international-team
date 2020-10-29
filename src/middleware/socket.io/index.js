@@ -1,40 +1,17 @@
+import { create } from 'lodash';
 import { logger } from '../../helpers/logger';
 import { io } from '../../server';
+import { authToken } from './auth';
+import { sendGlobleMessage } from './chat';
+import { createRoom } from './room';
 
 export function socketAction(socket) {
     // TODO: AUTH NEW CONNECTION
-    logger.debug(`New Connection: ${'NOT YET DO AUTH'}`);
-    socket.on('sendChatMessage', (msg) => {
-        logger.debug(`message: ${msg}`);
-        io.emit('newChatMessage', `SOME ONE: ${msg}`);
+    const user = authToken(socket?.handshake?.query?.token);
+    console.log(user);
+    socket.emit('userInfo', user);
+    socket.on('sendGlobalChatMessage', (msg) => {
+        sendGlobleMessage(msg, user);
     });
-    socket.on('sendDecision', (decision) => {
-        logger.debug(`message: ${decision}`);
-        io.emit('decisionAccepted', decision);
-        io.emit('gameStatus', {
-            users: [
-                {
-                    id: 1,
-                    health: 100,
-                    money: 10000,
-                    population: 1000000,
-                    etc: 'abc',
-                },
-                {
-                    id: 2,
-                    health: 90,
-                    money: 1000,
-                    population: 1000000,
-                    etc: 'abc',
-                },
-                {
-                    id: 1,
-                    health: 50,
-                    money: 1000000,
-                    population: 1000000,
-                    etc: 'abc',
-                },
-            ],
-        });
-    });
+    socket.on('createNewRoom', (msg) => createRoom(user));
 }

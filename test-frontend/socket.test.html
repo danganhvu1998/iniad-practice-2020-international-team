@@ -61,19 +61,23 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
         $(function () {
-            var socket = io('http://localhost:3000');
+            const token = 'fakeAuthToken-sendLoginRequestToGet';
+            var socket = io(
+                'http://localhost:3000', 
+                {query: {token}}
+            );
             $('form').submit(function () {
-                socket.emit('sendChatMessage', $('#m').val());
-                socket.emit('sendDecision', $('#m').val());
+                // socket.emit('sendGlobalChatMessage', $('#m').val());
+                socket.emit('createNewRoom');
                 $('#m').val('');
                 return false;
             });
-            socket.on('newChatMessage', function (msg) {
+            socket.on('userInfo', function (userInfo) {
+                console.log('USER INFO', userInfo)
+            });
+            socket.on('newGlobalChatMessage', function (msg) {
                 $('#messages').append($('<li>').text(msg));
                 window.scrollTo(0, document.body.scrollHeight);
-            });
-            socket.on('gameStatus', function (status) {
-                console.log('CURRENT GAME STATUS', status)
             });
         });
     </script>
