@@ -1,10 +1,33 @@
+import { func } from '@hapi/joi';
+import { level } from 'winston';
 import { io } from '../../server';
 import { getRandomString } from '../../helpers/commonFunctions';
-import { createNewRoom, deleteRoom } from '../../redis/room';
+import {
+    createNewRoom, deleteRoom, putNewUserToRoom, getRoomStat,
+    isRoomExist, kickUserFromRoom,
+} from '../../redis/room';
+
+export async function joinRoom(user, roomCode) {
+    const roomStat = getRoomStat(roomCode);
+    if (roomStat.playerCount >= 4) { // Max players in 1 room
+        return null;
+    }
+    const room = await putNewUserToRoom(roomCode);
+    user.room = room;
+    // TODO implement PUB / SUB
+    return room;
+}
 
 export async function createRoom(user) {
-    console.log(user);
     const newRoom = await createNewRoom();
-    console.log('NEW ROOM', newRoom);
-    console.log(await deleteRoom(newRoom.name));
+    user.room = await joinRoom(user, newRoom.code);
+    return newRoom;
+}
+
+export async function leaveRoom(user) {
+    if (!await isRoomExist(user.room.code)) {
+        await kickUserFromRoom(user.room.code);
+    }
+    delete user.room;
+    return true;
 }

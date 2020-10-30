@@ -49,9 +49,10 @@ export async function createNewRoom() {
 
 export async function deleteRoom(roomNameOrCode) {
     const roomName = getRoomName(roomNameOrCode);
-    roomAllStats.forEach((stat) => {
-        delAsync(getRedisRoomStatName(roomName, stat));
+    roomAllStats.forEach(async (stat) => {
+        await delAsync(getRedisRoomStatName(roomName, stat));
     });
+    return null;
 }
 
 export async function putNewUserToRoom(roomNameOrCode) {
@@ -66,7 +67,10 @@ export async function kickUserFromRoom(roomNameOrCode) {
     const roomName = getRoomName(roomNameOrCode);
     const roomStats = await getRoomStat(roomName);
     roomStats.playerCount = (roomStats.playerCount || 0) - 1;
-    if (roomStats.playerCount < 0) roomStats.playerCount = 0;
+    if (roomStats.playerCount < 0) {
+        const newRoomStat = await deleteRoom(roomNameOrCode);
+        return newRoomStat;
+    }
     await setRoomStatus(roomStats);
     return roomStats;
 }
