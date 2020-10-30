@@ -67,8 +67,20 @@
                 {query: {token}}
             );
             $('form').submit(function () {
-                // socket.emit('sendGlobalChatMessage', $('#m').val());
-                socket.emit('createNewRoom');
+                const request = $('#m').val()
+                if(request.startsWith('room_cmd')){
+                    requestParams = request.toLowerCase().split(' ');
+                    if( requestParams[1] == 'create' ){
+                        socket.emit('createNewRoom');
+                    } else if( requestParams[1] == 'join' ){
+                        socket.emit('joinRoom', requestParams[2]);
+                    } else {
+                        socket.emit('leaveRoom');
+                    }
+                } else {
+                    socket.emit('sendGlobalChatMessage', $('#m').val());
+                    socket.emit('getCurrentStatus');
+                }
                 $('#m').val('');
                 return false;
             });

@@ -8,6 +8,7 @@ import {
 } from '../../redis/room';
 
 export async function joinRoom(user, roomCode) {
+    console.log('JOIN ROOM', roomCode);
     const roomStat = getRoomStat(roomCode);
     if (roomStat.playerCount >= 4) { // Max players in 1 room
         return null;
@@ -20,7 +21,7 @@ export async function joinRoom(user, roomCode) {
 
 export async function createRoom(user) {
     const newRoom = await createNewRoom();
-    user.room = await joinRoom(user, newRoom.code);
+    await joinRoom(user, newRoom.code);
     return newRoom;
 }
 

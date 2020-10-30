@@ -3,6 +3,7 @@ import { getRandomString } from '../helpers/commonFunctions';
 import { roomAllStats } from './constance';
 
 function getRoomName(roomNameOrCode) {
+    console.log('ROOM NAME', roomNameOrCode);
     return roomNameOrCode.startsWith('room') ? roomNameOrCode : `room${roomNameOrCode}`;
 }
 
@@ -59,7 +60,7 @@ export async function putNewUserToRoom(roomNameOrCode) {
     const roomName = getRoomName(roomNameOrCode);
     const roomStats = await getRoomStat(roomName);
     roomStats.playerCount = (roomStats.playerCount || 0) + 1;
-    await setRoomStatus(roomStats);
+    await setRoomStatus(roomName, roomStats);
     return roomStats;
 }
 
