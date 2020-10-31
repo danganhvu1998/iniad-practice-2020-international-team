@@ -69,7 +69,7 @@
             $('form').submit(function () {
                 const request = $('#m').val()
                 if(request.startsWith('room_cmd')){
-                    requestParams = request.toLowerCase().split(' ');
+                    requestParams = request.split(' ');
                     if( requestParams[1] == 'create' ){
                         socket.emit('createNewRoom');
                     } else if( requestParams[1] == 'join' ){
@@ -77,9 +77,12 @@
                     } else {
                         socket.emit('leaveRoom');
                     }
+                } else if (request.startsWith('room_msg')) {
+                    socket.emit('sendRoomChatMessage', $('#m').val());
+                } else if (request.startsWith('user_stat')) {
+                    socket.emit('getCurrentStatus');
                 } else {
                     socket.emit('sendGlobalChatMessage', $('#m').val());
-                    socket.emit('getCurrentStatus');
                 }
                 $('#m').val('');
                 return false;
@@ -89,6 +92,10 @@
             });
             socket.on('newGlobalChatMessage', function (msg) {
                 $('#messages').append($('<li>').text(msg));
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+            socket.on('newRoomChatMessage', function (msg) {
+                $('#messages').append($('<li style="color:red">').text('FROM PRIVATE ROOM: ' + msg));
                 window.scrollTo(0, document.body.scrollHeight);
             });
         });

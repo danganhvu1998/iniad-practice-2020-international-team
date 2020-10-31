@@ -3,7 +3,6 @@ import { getRandomString } from '../helpers/commonFunctions';
 import { roomAllStats } from './constance';
 
 function getRoomName(roomNameOrCode) {
-    console.log('ROOM NAME', roomNameOrCode);
     return roomNameOrCode.startsWith('room') ? roomNameOrCode : `room${roomNameOrCode}`;
 }
 
@@ -25,6 +24,8 @@ export async function getRoomStat(roomNameOrCode, stats = roomAllStats) {
     for (let i = 0; i < stats.length; i += 1) {
         const stat = stats[i];
         res[stat] = await getAsync(getRedisRoomStatName(roomNameOrCode, stat));
+        const intParseStat = parseInt(res[stat], 10);
+        if (!Number.isNaN(intParseStat)) res[stat] = intParseStat;
     }
     return res;
 }
@@ -68,7 +69,7 @@ export async function kickUserFromRoom(roomNameOrCode) {
     const roomName = getRoomName(roomNameOrCode);
     const roomStats = await getRoomStat(roomName);
     roomStats.playerCount = (roomStats.playerCount || 0) - 1;
-    if (roomStats.playerCount < 0) {
+    if (roomStats.playerCount <= 0) {
         const newRoomStat = await deleteRoom(roomNameOrCode);
         return newRoomStat;
     }
