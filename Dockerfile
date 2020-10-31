@@ -4,7 +4,7 @@
 # Current build docker image size is ~1GB
 
 # Stage 1: build node_modules
-FROM node:10 AS nodeModulesBuilder
+FROM node:12 AS nodeModulesBuilder
 
 WORKDIR /tmp_dir
 
