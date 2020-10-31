@@ -1,8 +1,10 @@
 import { setAsync, getAsync, delAsync } from './index';
 import { getRandomString } from '../helpers/commonFunctions';
 import { roomAllStats } from './constance';
+// eslint-disable-next-line import/no-cycle
+import { addRoomCodeToList } from './game';
 
-function getRoomName(roomNameOrCode) {
+export function getRoomName(roomNameOrCode) {
     return roomNameOrCode.startsWith('room') ? roomNameOrCode : `room${roomNameOrCode}`;
 }
 
@@ -27,13 +29,14 @@ export async function getRoomStat(roomNameOrCode, stats = roomAllStats) {
         const intParseStat = parseInt(res[stat], 10);
         if (!Number.isNaN(intParseStat)) res[stat] = intParseStat;
     }
-    return res;
+    if (res?.isExisting) return res;
+    return null;
 }
 
 export async function isRoomExist(roomNameOrCode) {
     const roomName = getRoomName(roomNameOrCode);
     const roomStats = await getRoomStat(roomName);
-    if (roomStats.isExisting) return true;
+    if (roomStats?.isExisting) return true;
     return false;
 }
 
@@ -43,6 +46,7 @@ export async function createNewRoom() {
         if (!await isRoomExist(roomCode)) {
             await setRoomStatus(roomCode, { isExisting: 1, playerCount: 0, code: roomCode });
             const roomStats = await getRoomStat(roomCode);
+            addRoomCodeToList(roomCode);
             return roomStats;
         }
     }

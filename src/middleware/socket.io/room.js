@@ -27,7 +27,7 @@ export async function leaveRoom(user) {
     if (await isRoomExist(user.room.code)) {
         await kickUserFromRoom(user.room.code);
     }
-    delete user.room;
     user.socket.leaveRoom(user.room.name);
+    delete user.room;
     return true;
 }

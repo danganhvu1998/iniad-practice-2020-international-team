@@ -1,1 +1,1 @@
-export const roomAllStats = ['isExisting', 'playerCount', 'code'];
+export const roomAllStats = ['isExisting', 'playerCount', 'code', 'gameStatus', 'isPlaying'];
