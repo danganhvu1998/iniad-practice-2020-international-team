@@ -23,7 +23,7 @@ RUN npm run build
 
 
 # Stage 3: copy node_modules and compiled source code
-FROM node:10
+FROM node:12
 
 WORKDIR /usr/src/app
 
@@ -38,31 +38,3 @@ RUN npm i -g sequelize-cli
 EXPOSE 3000
 ENTRYPOINT ["npm", "start"]
 
-
-
-
-
-
-# Create app directory
-# WORKDIR /usr/src/app
-
-# COPY ./docker/wait-for-it.sh /
-# COPY ./docker/init.sh /
-
-# RUN chmod +x /wait-for-it.sh
-# RUN chmod +x /init.sh
-
-# # Install app dependencies
-# # A wildcard is used to ensure both package.json AND package-lock.json are copied
-# # where available (npm@5+)
-# COPY package*.json ./
-# RUN npm install
-# RUN npm i -g sequelize-cli
-# # If you are building your code for production
-# # RUN npm ci --only=production
-
-# COPY . .
-
-# EXPOSE 3000
-
-# CMD /init.sh
