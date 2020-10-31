@@ -1,8 +1,10 @@
 import redis from 'redis';
 import { promisify } from 'util';
+import config from 'config';
 import logger from '../helpers/logger';
 
-const client = redis.createClient();
+const redisConnection = config.get('redis');
+const client = redis.createClient(redisConnection);
 
 client.on('error', (error) => {
     logger.error(error);
