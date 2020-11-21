@@ -62,10 +62,10 @@ export async function userInvest(userId, roomNameOrCode, investmentId) {
             ) break;
             await new Promise((r) => setTimeout(r, investment.time * 1000));
             status[i].status.invested.push(investmentId);
-            status[i].status.economy += investment.affect.economy;
-            status[i].status.society += investment.affect.society;
-            status[i].status.environment += investment.affect.environment;
-            status[i].status.income += investment.affect.income;
+            status[i].status.economy *= (100.0 + investment.affect.economy) / 100;
+            status[i].status.society *= (100.0 + investment.affect.society) / 100;
+            status[i].status.environment *= (100.0 + investment.affect.environment) / 100;
+            status[i].status.income *= (100.0 + investment.affect.income) / 100;
             await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
         }
     }
