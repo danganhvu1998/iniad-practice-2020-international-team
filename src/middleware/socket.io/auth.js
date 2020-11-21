@@ -1,8 +1,7 @@
 export function authToken(token) {
-    console.log(token);
     const user = {
-        name: `${new Date().getTime() % 1000}`,
-        id: new Date().getTime() % 100,
+        name: `GUESS ${new Date().getTime() % 1000}`,
+        id: new Date().getTime(),
     };
     return user;
 }

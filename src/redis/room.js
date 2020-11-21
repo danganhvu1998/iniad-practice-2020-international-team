@@ -1,6 +1,9 @@
-import { setAsync, getAsync, delAsync } from './index';
+import {
+    setAsync, getAsync, delAsync, incrAsync,
+    decrAsync,
+} from './index';
 import { getRandomString } from '../helpers/commonFunctions';
-import { roomAllStats } from './constance';
+import { roomAllStats, initStatus } from './constance';
 // eslint-disable-next-line import/no-cycle
 import { addRoomCodeToList } from './game';
 
@@ -8,13 +11,14 @@ export function getRoomName(roomNameOrCode) {
     return roomNameOrCode.startsWith('room') ? roomNameOrCode : `room${roomNameOrCode}`;
 }
 
-function getRedisRoomStatName(roomNameOrCode, stat) {
+export function getRedisRoomStatName(roomNameOrCode, stat) {
     const roomName = getRoomName(roomNameOrCode);
     return `${roomName}:${stat}`;
 }
 
 export async function setRoomStatus(roomNameOrCode, params = {}) {
     const roomName = getRoomName(roomNameOrCode);
+    params.updatedAt = new Date().getTime();
     roomAllStats.forEach(async (stat) => {
         if (params[stat]) await setAsync(getRedisRoomStatName(roomName, stat), params[stat]);
     });
@@ -26,10 +30,24 @@ export async function getRoomStat(roomNameOrCode, stats = roomAllStats) {
     for (let i = 0; i < stats.length; i += 1) {
         const stat = stats[i];
         res[stat] = await getAsync(getRedisRoomStatName(roomNameOrCode, stat));
-        const intParseStat = parseInt(res[stat], 10);
-        if (!Number.isNaN(intParseStat)) res[stat] = intParseStat;
+        try {
+            res[stat] = JSON.parse(res[stat]);
+        } catch (e) {
+            // Ignore malformed lines.
+        }
     }
-    if (res?.isExisting) return res;
+    if (res?.isExisting) {
+        if (res.isPlaying && res.gameStatus) {
+            const newGameStatus = [];
+            res.gameStatus.forEach((userStatus) => {
+                userStatus.status.money += userStatus.status.income * (new Date().getTime() - res.updatedAt);
+                newGameStatus.push(userStatus);
+            });
+            setRoomStatus(roomName, { gameStatus: JSON.stringify(newGameStatus) });
+            res.gameStatus = newGameStatus;
+        }
+        return res;
+    }
     return null;
 }
 
@@ -61,22 +79,38 @@ export async function deleteRoom(roomNameOrCode) {
     return null;
 }
 
-export async function putNewUserToRoom(roomNameOrCode) {
+export async function putNewUserToRoom(roomNameOrCode, user) {
     const roomName = getRoomName(roomNameOrCode);
+    await incrAsync(getRedisRoomStatName(roomName, 'playerCount'));
     const roomStats = await getRoomStat(roomName);
-    roomStats.playerCount = (roomStats.playerCount || 0) + 1;
-    await setRoomStatus(roomName, roomStats);
-    return roomStats;
+    const status = roomStats.gameStatus || [];
+    status.push({
+        user: {
+            name: user.name,
+            id: user.id,
+        },
+        status: initStatus,
+    });
+    await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
+    const roomNewStats = await getRoomStat(roomName);
+    return roomNewStats;
 }
 
-export async function kickUserFromRoom(roomNameOrCode) {
+export async function kickUserFromRoom(roomNameOrCode, user) {
     const roomName = getRoomName(roomNameOrCode);
+    await decrAsync(getRedisRoomStatName(roomName, 'playerCount'));
     const roomStats = await getRoomStat(roomName);
-    roomStats.playerCount = (roomStats.playerCount || 0) - 1;
     if (roomStats.playerCount <= 0) {
         const newRoomStat = await deleteRoom(roomNameOrCode);
         return newRoomStat;
     }
-    await setRoomStatus(roomStats);
-    return roomStats;
+    const status = roomStats.gameStatus || [];
+    for (let i = 0; i < status.length; i += 1) {
+        if (status[i].user.id === user.id) {
+            status.splice(i, 1);
+        }
+    }
+    await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
+    const roomNewStats = await getRoomStat(roomName);
+    return roomNewStats;
 }

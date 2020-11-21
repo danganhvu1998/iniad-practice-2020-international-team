@@ -66,6 +66,8 @@
                 'http://localhost:3000', 
                 {query: {token}}
             );
+            socket.emit('createNewRoom');
+            socket.emit('ready');
             $('form').submit(function () {
                 const request = $('#m').val()
                 if(request.startsWith('room_cmd')){
@@ -74,6 +76,10 @@
                         socket.emit('createNewRoom');
                     } else if( requestParams[1] == 'join' ){
                         socket.emit('joinRoom', requestParams[2]);
+                    } else if( requestParams[1] == 'ready' ){
+                        socket.emit('ready', requestParams[2]);
+                    } else if( requestParams[1] == 'notReady' ){
+                        socket.emit('notReady', requestParams[2]);
                     } else {
                         socket.emit('leaveRoom');
                     }
@@ -91,7 +97,10 @@
                 console.log('USER INFO', userInfo)
             });
             socket.on('roomStat', function (roomStat) {
-                console.log('ROOM STAT', roomStat)
+                console.log(`GAME ${roomStat.code} STATUS at ${new Date()}`)
+                roomStat.gameStatus.forEach(userStat => {
+                    console.log(`id: ${userStat.user.id}, name: ${userStat.user.name}, money: ${userStat.status.money}`)
+                });
             });
             
             socket.on('newGlobalChatMessage', function (msg) {
