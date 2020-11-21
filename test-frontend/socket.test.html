@@ -80,6 +80,8 @@
                         socket.emit('ready', requestParams[2]);
                     } else if( requestParams[1] == 'notReady' ){
                         socket.emit('notReady', requestParams[2]);
+                    } else if( requestParams[1] == 'invest' ){
+                        socket.emit('invest', requestParams[2]);
                     } else {
                         socket.emit('leaveRoom');
                     }
@@ -99,8 +101,12 @@
             socket.on('roomStat', function (roomStat) {
                 console.log(`GAME ${roomStat.code} STATUS at ${new Date()}`)
                 roomStat.gameStatus.forEach(userStat => {
-                    console.log(`id: ${userStat.user.id}, name: ${userStat.user.name}, money: ${userStat.status.money}`)
+                    console.log(`id: ${userStat.user.id}, name: ${userStat.user.name}`)
+                    console.log(`.... money: ${userStat.status.money}, income: ${userStat.status.income}`)
+                    console.log(`.... society: ${userStat.status.society}, environment: ${userStat.status.environment}`)
+                    console.log(`.... society: ${userStat.status.economy}, invested: ${userStat.status.invested}`)
                 });
+                console.log(roomStat)
             });
             
             socket.on('newGlobalChatMessage', function (msg) {
