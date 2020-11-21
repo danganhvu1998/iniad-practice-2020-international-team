@@ -33,3 +33,9 @@ export async function leaveRoom(user) {
     delete user.room;
     return true;
 }
+
+export async function getRoomStatus(user) {
+    if (user.room) return;
+    const roomStat = await getRoomStat(user.room.name);
+    user.socket.emit('roomStat', roomStat);
+}

@@ -2,7 +2,10 @@ import {
     getNextRoomStat, userReady, userNotReady, userInvest,
 } from '../../redis/game';
 import { getRoomStat, setRoomStatus } from '../../redis/room';
+import { llenAsync } from '../../redis';
 import { io } from '../../server';
+
+const roomsList = 'roomsList';
 
 export async function sendGameStatToNextRoom() {
     const nextGameStat = await getNextRoomStat();
@@ -22,7 +25,8 @@ export async function sendAllGameStatsToRooms() {
     // eslint-disable-next-line no-constant-condition
     while (true) {
         sendGameStatToNextRoom();
-        await new Promise((r) => setTimeout(r, 2500));
+        const roomCount = await llenAsync(roomsList) || 1;
+        await new Promise((r) => setTimeout(r, 30000 / roomCount));
     }
 }
 

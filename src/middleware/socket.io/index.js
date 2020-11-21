@@ -1,6 +1,8 @@
 import { authToken } from './auth';
 import { sendGlobleMessage, sendRoomMessage } from './chat';
-import { createRoom, joinRoom, leaveRoom } from './room';
+import {
+    createRoom, joinRoom, leaveRoom, getRoomStatus,
+} from './room';
 import { ready, notReady, invest } from './game';
 
 export function socketAction(socket) {
@@ -15,6 +17,7 @@ export function socketAction(socket) {
     // ROOM
     socket.on('createNewRoom', () => createRoom(user));
     socket.on('joinRoom', (roomCode) => joinRoom(user, roomCode));
+    socket.on('getRoomStat', () => getRoomStatus(user));
     socket.on('leaveRoom', () => leaveRoom(user));
     // GAME
     socket.on('ready', () => ready(user));
