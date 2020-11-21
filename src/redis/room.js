@@ -43,7 +43,6 @@ export async function getRoomStat(roomNameOrCode, stats = roomAllStats) {
                 userStatus.status.money += userStatus.status.income * (new Date().getTime() - res.updatedAt);
                 newGameStatus.push(userStatus);
             });
-            setRoomStatus(roomName, { gameStatus: JSON.stringify(newGameStatus) });
             res.gameStatus = newGameStatus;
         }
         return res;
