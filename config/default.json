@@ -20,5 +20,9 @@
     "identity": "UNKNOWN Localhost",
     "postWebhook": "https://wrong",
     "isDev": false
+  }, 
+  "redis": {
+    "host": "redis",
+    "port": 6379
   }
 }

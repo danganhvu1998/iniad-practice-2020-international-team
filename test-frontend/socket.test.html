@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+        }
+
+        form {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        form input {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: 0.5%;
+        }
+
+        form button {
+            width: 9%;
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="messages"></ul>
+    <form action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function () {
+            const token = 'fakeAuthToken-sendLoginRequestToGet';
+            var socket = io(
+                'http://localhost:3000', 
+                {query: {token}}
+            );
+            socket.emit('createNewRoom');
+            socket.emit('ready');
+            $('form').submit(function () {
+                const request = $('#m').val()
+                if(request.startsWith('room_cmd')){
+                    requestParams = request.split(' ');
+                    if( requestParams[1] == 'create' ){
+                        socket.emit('createNewRoom');
+                    } else if( requestParams[1] == 'join' ){
+                        socket.emit('joinRoom', requestParams[2]);
+                    } else if( requestParams[1] == 'ready' ){
+                        socket.emit('ready', requestParams[2]);
+                    } else if( requestParams[1] == 'notReady' ){
+                        socket.emit('notReady', requestParams[2]);
+                    } else if( requestParams[1] == 'invest' ){
+                        socket.emit('invest', requestParams[2]);
+                    } else {
+                        socket.emit('leaveRoom');
+                    }
+                } else if (request.startsWith('room_msg')) {
+                    socket.emit('sendRoomChatMessage', $('#m').val());
+                } else if (request.startsWith('user_stat')) {
+                    socket.emit('getCurrentStatus');
+                } else {
+                    socket.emit('sendGlobalChatMessage', $('#m').val());
+                }
+                $('#m').val('');
+                return false;
+            });
+            socket.on('userInfo', function (userInfo) {
+                console.log('USER INFO', userInfo)
+            });
+            socket.on('roomStat', function (roomStat) {
+                console.log(`GAME ${roomStat.code} STATUS at ${new Date()}`)
+                roomStat.gameStatus.forEach(userStat => {
+                    console.log(`id: ${userStat.user.id}, name: ${userStat.user.name}`)
+                    console.log(`.... money: ${userStat.status.money}, income: ${userStat.status.income}`)
+                    console.log(`.... society: ${userStat.status.society}, environment: ${userStat.status.environment}`)
+                    console.log(`.... society: ${userStat.status.economy}, invested: ${userStat.status.invested}`)
+                });
+                console.log(roomStat)
+            });
+            
+            socket.on('newGlobalChatMessage', function (msg) {
+                $('#messages').append($('<li>').text(msg));
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+            socket.on('newRoomChatMessage', function (msg) {
+                $('#messages').append($('<li style="color:red">').text('FROM PRIVATE ROOM: ' + msg));
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+        });
+    </script>
+</body>
+
+</html>

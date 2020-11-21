@@ -30,3 +30,15 @@ export async function updateDataAfterDelete(model, field, currentValue, afterDel
 export function encryptPassword(password) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
 }
+
+export function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
+
+export function getRandomString(length = 6, chars = 'QWERTYUIOPASDFGHJKLZXCVBNM') {
+    let res = '';
+    for (let i = 0; i < length; i += 1) {
+        res += chars[getRandomInt(chars.length)];
+    }
+    return res;
+}

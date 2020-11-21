@@ -1,4 +1,5 @@
 import { respondWithError } from './helpers/messageResponse';
+import { sendAllGameStatsToRooms } from './middleware/socket.io/game';
 
 const express = require('express');
 const morgan = require('morgan');
@@ -10,9 +11,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const i18n = require('./middleware/i18n');
-
-require('./models');
 const routerManager = require('./routes');
+require('./models');
+
+sendAllGameStatsToRooms();
 
 const app = express();
 
@@ -26,8 +28,8 @@ app.use(cookieParser());
 // cors  configuration
 const corsOptions = {
     origin: '*',
-    methods: ['POST', 'GET', 'PUT', 'PATCH', 'DELETE'],
-    exposedHeaders: ['Content-Length', 'Authorization', 'Accept-Language'],
+    methods: '*',
+    exposedHeaders: '*',
 
 };
 
