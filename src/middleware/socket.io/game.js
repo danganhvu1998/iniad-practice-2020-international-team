@@ -26,7 +26,7 @@ export async function sendAllGameStatsToRooms() {
     while (true) {
         sendGameStatToNextRoom();
         const roomCount = await llenAsync(roomsList) || 1;
-        await new Promise((r) => setTimeout(r, 30000 / roomCount));
+        await new Promise((r) => setTimeout(r, 3000 / roomCount));
     }
 }
 
@@ -39,6 +39,7 @@ export async function gameStart(roomNameOrCode) {
 }
 
 export async function notReady(user) {
+    console.log('NOT READY', user.id, user.room.code);
     if (!user.room) return;
     if (!user.room.ready) return;
     user.room.ready = 0;
@@ -46,6 +47,7 @@ export async function notReady(user) {
 }
 
 export async function ready(user) {
+    console.log('READY', user.id, user.room.code);
     if (!user.room) return;
     if (user.room.ready) return;
     user.room.ready = 1;
@@ -57,6 +59,7 @@ export async function ready(user) {
 }
 
 export async function invest(user, investmentId) {
+    console.log('INVEST', user.id, user.room.code, investmentId);
     if (!user.room) return;
     const gameStat = await getRoomStat(user.room.name);
     if (!gameStat.isPlaying) return;

@@ -22,7 +22,7 @@ export async function getNextRoomStat() {
         const nextRoomCode = await rpopAsync(roomsList);
         const nextRoomName = getRoomName(nextRoomCode);
         const nextRoomStatus = await getRoomStat(nextRoomName);
-        logger.debug(`Check ${nextRoomName} last update: ${nextRoomStatus?.updatedAt || 0}`);
+        // logger.debug(`Check ${nextRoomName} last update: ${nextRoomStatus?.updatedAt || 0}`);
         if (new Date().getTime() - nextRoomStatus?.updatedAt < 600000) { // 10 min
             await addRoomCodeToList(nextRoomName);
             return nextRoomStatus;

@@ -5,6 +5,7 @@ import {
 import { logger } from '../../helpers/logger';
 
 export async function joinRoom(user, roomCode) {
+    console.log('JOIN', user.id, roomCode);
     if (user.room) return null;
     const roomStat = await getRoomStat(roomCode);
     if (roomStat.playerCount >= 4) { // Max players in 1 room
@@ -25,6 +26,7 @@ export async function createRoom(user) {
 }
 
 export async function leaveRoom(user) {
+    console.log('LEAVE', user.id, user.room.code);
     if (!user.room) return true;
     if (await isRoomExist(user.room.code)) {
         await kickUserFromRoom(user.room.code, user);
