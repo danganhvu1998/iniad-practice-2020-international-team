@@ -4,13 +4,23 @@ import {
 import { getRoomStat, setRoomStatus } from '../../redis/room';
 import { llenAsync } from '../../redis';
 import { io } from '../../server';
+import { eventsList } from './gameEvent';
 
 const roomsList = 'roomsList';
 
 export async function sendGameStatToNextRoom() {
-    const nextGameStat = await getNextRoomStat();
-    if (nextGameStat) {
-        io.to(nextGameStat.name).emit('roomStat', nextGameStat);
+    // IMPORTANT: HERE ALSO SEND EVENT TO ROOM
+    const nextRoomStat = await getNextRoomStat();
+    if (nextRoomStat) {
+        let roomStat = nextRoomStat;
+        console.log('RUNNING CHECK ON', roomStat.name);
+        if (roomStat.isPlaying) {
+            for (let i = 0; i < eventsList.length; i += 1) {
+                console.log('RUNNING EVENT CHECK', '>>', eventsList[i].name, '<<');
+                if (eventsList[i].isOccur(roomStat, eventsList[i])) roomStat = await getRoomStat(roomStat.name);
+            }
+        }
+        io.to(roomStat.name).emit('roomStat', roomStat);
     }
 }
 

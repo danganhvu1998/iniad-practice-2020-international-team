@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { customLogger } from '../helpers/logger';
 import { investments } from './constance';
 import {
     rpopAsync, lpushAsync, llenAsync, incrAsync, decrAsync,
@@ -11,7 +10,6 @@ import {
 } from './room';
 
 const roomsList = 'roomsList';
-const logger = customLogger('healthCheck');
 
 export async function addRoomCodeToList(roomCode) {
     await lpushAsync(roomsList, roomCode);
