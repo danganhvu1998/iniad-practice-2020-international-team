@@ -55,6 +55,8 @@ export async function userInvest(userId, roomNameOrCode, investmentId) {
             if (status[i].user.money < investment.cost) {
                 return false;
             }
+            status[i].user.money -= investment.cost;
+
             const investedList = status[i].status.invested || [];
             if (
                 _.intersection(investedList, investment.require).length !== investment.require.length

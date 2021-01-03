@@ -16,8 +16,10 @@ export async function sendGameStatToNextRoom() {
         console.log('RUNNING CHECK ON', roomStat.name);
         if (roomStat.isPlaying) {
             for (let i = 0; i < eventsList.length; i += 1) {
-                console.log('RUNNING EVENT CHECK', '>>', eventsList[i].name, '<<');
-                if (eventsList[i].isOccur(roomStat, eventsList[i])) roomStat = await getRoomStat(roomStat.name);
+                if (eventsList[i].isOccur(roomStat, eventsList[i])) {
+                    roomStat = await getRoomStat(roomStat.name);
+                    console.log('EVENT OCCUR', eventsList[i].name, roomStat.code);
+                }
             }
         }
         io.to(roomStat.name).emit('roomStat', roomStat);
