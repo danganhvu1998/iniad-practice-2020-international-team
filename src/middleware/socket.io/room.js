@@ -14,6 +14,7 @@ export async function joinRoom(user, roomCode) {
     const room = await putNewUserToRoom(roomCode, user);
     user.room = room;
     user.socket.join(user.room.name);
+    user.socket.emit('joinRoomConfirmation', roomCode);
     return room;
 }
 
@@ -22,6 +23,7 @@ export async function createRoom(user) {
     const newRoom = await createNewRoom();
     logger.debug(`${user.id} has created room ${newRoom.code}`);
     await joinRoom(user, newRoom.code);
+    user.socket.emit('joinRoomConfirmation', newRoom.code);
     return newRoom;
 }
 
