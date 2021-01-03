@@ -10,6 +10,7 @@ export function socketAction(socket) {
     const user = authToken(socket?.handshake?.query?.token);
     user.socket = socket;
     console.log('NEW CONNECTION', user.name, user.id);
+    socket.emit('userInfo', { name: user.name, id: user.id, room: user.room });
     // USER STATUS
     socket.on('getCurrentStatus', () => { socket.emit('userInfo', { name: user.name, id: user.id, room: user.room }); });
     // CHAT
