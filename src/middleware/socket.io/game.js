@@ -70,9 +70,9 @@ export async function ready(user) {
     }
 }
 
-export async function investConfomation(user, investmentId) {
+export async function investConfirmation(user, investmentId) {
     console.log('INVESTMENT COMPLETED', user.id, user.room.code, investmentId);
-    user.socket.emit('investConfomation', investmentId);
+    user.socket.emit('investConfirmation', investmentId);
 }
 
 export async function invest(user, investmentId) {
@@ -81,6 +81,6 @@ export async function invest(user, investmentId) {
     const gameStat = await getRoomStat(user.room.name);
     if (!gameStat.isPlaying) return;
     if (await userInvest(user.id, user.room.name, investmentId)) {
-        await investConfomation(user, investmentId);
+        await investConfirmation(user, investmentId);
     }
 }
