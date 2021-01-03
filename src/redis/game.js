@@ -40,7 +40,8 @@ export async function userNotReady(roomNameOrCode) {
     await decrAsync(getRedisRoomStatName(roomName, 'playerReadyCount'));
 }
 
-export async function userInvest(userId, roomNameOrCode, investmentId) {
+export async function userInvest(user, roomNameOrCode, investmentId) {
+    const userId = user.id;
     const roomName = getRoomName(roomNameOrCode);
     let roomStats = await getRoomStat(roomName);
     let status = roomStats.gameStatus || [];
@@ -62,6 +63,8 @@ export async function userInvest(userId, roomNameOrCode, investmentId) {
             await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
         }
     }
+    console.log('INVESTMENT CONFIRMED', user.id, user.room.code, investmentId);
+    user.socket.emit('investConfirmation', investmentId);
     await new Promise((r) => setTimeout(r, investment.time * 1000));
     roomStats = await getRoomStat(roomName);
     status = roomStats.gameStatus || [];
@@ -75,5 +78,7 @@ export async function userInvest(userId, roomNameOrCode, investmentId) {
             await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
         }
     }
+    console.log('INVESTMENT SUCCESSFULLY INVESTED', user.id, user.room.code, investmentId);
+    user.socket.emit('investCompletedConfirmation', investmentId);
     return true;
 }
