@@ -60,6 +60,7 @@ export async function userInvest(user, roomNameOrCode, investmentId) {
                 || status[i].status.money < investment.cost
             ) return false;
             status[i].status.money -= investment.cost;
+            status[i].status.invested.push(investmentId);
             await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
         }
     }
@@ -70,7 +71,6 @@ export async function userInvest(user, roomNameOrCode, investmentId) {
     status = roomStats.gameStatus || [];
     for (let i = 0; i < status.length; i += 1) {
         if (status[i].user.id === userId) {
-            status[i].status.invested.push(investmentId);
             status[i].status.economy *= (100.0 + investment.affect.economy) / 100;
             status[i].status.society *= (100.0 + investment.affect.society) / 100;
             status[i].status.environment *= (100.0 + investment.affect.environment) / 100;
