@@ -68,6 +68,11 @@ export async function ready(user) {
     }
 }
 
+export async function investConfomation(user, investmentId) {
+    console.log('INVESTMENT COMPLETED', user.id, user.room.code, investmentId);
+    user.socket.emit('investConfomation', investmentId);
+}
+
 export async function invest(user, investmentId) {
     console.log('INVEST', user.id, user.room.code, investmentId);
     if (!user.room) return;

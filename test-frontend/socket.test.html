@@ -108,11 +108,13 @@
                 });
                 console.log(roomStat)
             });
-            
-            socket.on('newGlobalChatMessage', function (msg) {
+
+            function handleNewMessage(msg){
                 $('#messages').append($('<li>').text(msg));
                 window.scrollTo(0, document.body.scrollHeight);
-            });
+            }
+            
+            socket.on('newGlobalChatMessage', handleNewMessage(msg));
             socket.on('newRoomChatMessage', function (msg) {
                 $('#messages').append($('<li style="color:red">').text('FROM PRIVATE ROOM: ' + msg));
                 window.scrollTo(0, document.body.scrollHeight);
