@@ -78,5 +78,7 @@ export async function invest(user, investmentId) {
     if (!user.room) return;
     const gameStat = await getRoomStat(user.room.name);
     if (!gameStat.isPlaying) return;
-    await userInvest(user.id, user.room.name, investmentId);
+    if (await userInvest(user.id, user.room.name, investmentId)) {
+        await investConfomation(user, investmentId);
+    }
 }

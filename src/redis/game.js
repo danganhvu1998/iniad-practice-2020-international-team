@@ -48,10 +48,13 @@ export async function userInvest(userId, roomNameOrCode, investmentId) {
     try {
         investment = investments[investmentId];
     } catch {
-        return {};
+        return false;
     }
     for (let i = 0; i < status.length; i += 1) {
         if (status[i].user.id === userId) {
+            if (status[i].user.money < investment.cost) {
+                return false;
+            }
             const investedList = status[i].status.invested || [];
             if (
                 _.intersection(investedList, investment.require).length !== investment.require.length
@@ -67,6 +70,5 @@ export async function userInvest(userId, roomNameOrCode, investmentId) {
             await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
         }
     }
-    const roomNewStats = await getRoomStat(roomName);
-    return roomNewStats;
+    return true;
 }
