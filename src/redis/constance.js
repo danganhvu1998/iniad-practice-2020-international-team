@@ -5,7 +5,7 @@ export const investments = [
         id: 0,
         name: 'Public Transportation',
         des: 'Improve the facilities of public transporation',
-        cost: 100,
+        cost: 100000,
         require: [], // Might be too hard to implement
         time: 30,
         affect: {
@@ -16,7 +16,7 @@ export const investments = [
         id: 1,
         name: 'Community Recovery Fund',
         des: 'Establish a community fund which can be used to response to pandemic or emergency situation',
-        cost: 1000,
+        cost: 1000000,
         require: [],
         time: 8,
         affect: {
@@ -27,7 +27,7 @@ export const investments = [
         id: 2,
         name: 'Social Protection',
         des: 'Improve workers\' benefits and guarantee their rights (such as Unemployment insurance)',
-        cost: 500,
+        cost: 50000,
         require: ['1'], // Might be too hard to implement
         time: 16,
         affect: {
@@ -39,7 +39,7 @@ export const investments = [
         name: 'Study Grants and Loans',
         // eslint-disable-next-line max-len
         des: 'Provide study grants and loan to workers to sharpen their skills, which can help them in finding a better job, and increase job opportunities',
-        cost: 3000,
+        cost: 300000,
         require: [],
         time: 30,
         affect: {
@@ -83,7 +83,7 @@ export const investments = [
         id: 7,
         name: 'Housing Subsidy',
         des: 'Provide housing subsidy (on rent or buying new house) for low-income family to improve their living environment',
-        cost: 3000,
+        cost: 300000,
         require: [],
         time: 40,
         affect: {
@@ -94,7 +94,7 @@ export const investments = [
         id: 8,
         name: 'Schools\' facilities',
         des: 'Improve the facilities and equipments to be used in schools',
-        cost: 2000,
+        cost: 200000,
         require: [],
         time: 50,
         affect: {
@@ -115,10 +115,10 @@ export const investments = [
 ];
 
 export const initStatus = {
-    economy: 30,
-    environment: 100,
-    society: 50,
+    economy: 75,
+    environment: 70,
+    society: 70,
     income: 5,
-    money: 1000000,
+    money: 3000000,
     invested: [],
 };
