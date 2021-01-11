@@ -109,15 +109,24 @@ export const investments = [
         require: [],
         time: 50,
         affect: {
-            economy: 2, society: 2, environment: 10, income: 5,
+            economy: -2, society: 2, environment: 10, income: 5,
         },
     },
 ];
 
+// export const initStatus = {
+//     economy: 75,
+//     environment: 70,
+//     society: 70,
+//     income: 5,
+//     money: 3000000,
+//     invested: [],
+// };
+
 export const initStatus = {
-    economy: 75,
-    environment: 70,
-    society: 70,
+    economy: 51,
+    environment: 51,
+    society: 51,
     income: 5,
     money: 3000000,
     invested: [],
