@@ -15,7 +15,7 @@ event.checkOccurCondition = (roomStat) => {
     roomStat.gameStatus.forEach((userStat) => {
         totalEconomyStatus += userStat.status.economy;
     });
-    if (totalEconomyStatus >= playerCount * 40) return false;
+    if (totalEconomyStatus >= playerCount * 50) return false;
     return true;
 };
 
