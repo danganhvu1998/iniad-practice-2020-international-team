@@ -4,7 +4,7 @@ export const event = { ...baseEvent };
 
 event.name = 'NUCLEAR MISSILE THREAD';
 event.description = 'Please evacuate asap to vault 76';
-event.occorPossibility = 0.05;
+event.occorPossibility = 0.03;
 event.affect = {
     economy: -5, society: -20, environment: +2, income: -50,
 };

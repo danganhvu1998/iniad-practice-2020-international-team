@@ -4,7 +4,7 @@ export const event = { ...baseEvent };
 
 event.name = 'GLOBAL WARMING';
 event.description = 'Oh you know what it is';
-event.occorPossibility = 0.2;
+event.occorPossibility = 0.07;
 event.affect = {
     economy: -3, society: -3, environment: -2, income: -2,
 };
