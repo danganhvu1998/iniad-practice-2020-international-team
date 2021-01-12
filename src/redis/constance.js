@@ -22,7 +22,7 @@ export const investments = [
         des:
         'Strengthen resilience and adaptive capacity to climate-related hazards and natural disasters in all regions',
         cost: 1000000,
-        require: ['1'], // Might be too hard to implement
+        require: [],
         time: 20,
         affect: {
             economy: 10,
@@ -37,7 +37,7 @@ export const investments = [
         des:
         "Improve workers' benefits and guarantee their rights (such as Unemployment insurance)",
         cost: 1000000,
-        require: ['1'], // Might be too hard to implement
+        require: [],
         time: 16,
         affect: {
             economy: 10,
