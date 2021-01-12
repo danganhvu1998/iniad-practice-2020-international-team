@@ -15,7 +15,7 @@ event.checkOccurCondition = (roomStat) => {
     roomStat.gameStatus.forEach((userStat) => {
         totalSocietyStatus += userStat.status.society;
     });
-    if (totalSocietyStatus >= playerCount * 50) return false;
+    if (totalSocietyStatus >= playerCount * 60) return false;
     return true;
 };
 

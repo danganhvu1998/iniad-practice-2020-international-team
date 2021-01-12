@@ -4,7 +4,7 @@ export const event = { ...baseEvent };
 
 event.name = 'WEATHER IS GREAT';
 event.description = 'Tree grow way faster';
-event.occorPossibility = 0.05;
+event.occorPossibility = 0.02;
 event.affect = {
     economy: +2, society: 3, environment: +5, income: +2,
 };

@@ -6,7 +6,7 @@ event.name = 'GLOBAL WARMING';
 event.description = 'Oh you know what it is';
 event.occorPossibility = 0.05;
 event.affect = {
-    economy: -3, society: -6, environment: -2, income: -2,
+    economy: -3, society: -10, environment: -2, income: -2,
 };
 
 event.checkOccurCondition = (roomStat) => {
