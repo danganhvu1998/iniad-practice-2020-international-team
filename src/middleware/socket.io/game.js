@@ -43,7 +43,7 @@ export async function sendAllGameStatsToRooms() {
 }
 
 export async function gameStart(roomNameOrCode) {
-    await setRoomStatus(roomNameOrCode, { isPlaying: true });
+    await setRoomStatus(roomNameOrCode, { isPlaying: true, startAt: new Date().getTime() });
     const gameStat = await getRoomStat(roomNameOrCode);
     if (gameStat) {
         io.to(gameStat.name).emit('gameStart', gameStat);
