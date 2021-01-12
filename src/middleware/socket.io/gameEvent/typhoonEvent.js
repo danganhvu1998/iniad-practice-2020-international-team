@@ -4,7 +4,7 @@ export const event = { ...baseEvent };
 
 event.name = 'TYPHOON';
 event.description = 'Why that a strong wind!';
-event.occorPossibility = 0.03;
+event.occorPossibility = 0.04;
 event.affect = {
     economy: -5, society: 0, environment: -15, income: -2,
 };
