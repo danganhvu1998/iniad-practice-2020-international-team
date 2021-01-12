@@ -530,7 +530,7 @@ export const initStatus = {
     economy: 51,
     environment: 51,
     society: 51,
-    income: 5,
+    income: 10,
     money: 1500000,
     invested: [],
 };
