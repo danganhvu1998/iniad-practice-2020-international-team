@@ -27,7 +27,7 @@ event.info = (eventInfo) => ({
 });
 
 event.isOccur = async (roomStat, eventInfo) => {
-    if (Math.random() > eventInfo.occorPossibility) return false;
+    if (Math.random() * 6 > eventInfo.occorPossibility) return false;
     if (!eventInfo.checkOccurCondition(roomStat)) return false;
     // EVENT OCCOR HERE
     const users = roomStat.gameStatus;

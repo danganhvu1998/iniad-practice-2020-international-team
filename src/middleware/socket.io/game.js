@@ -38,7 +38,7 @@ export async function sendAllGameStatsToRooms() {
     while (true) {
         sendGameStatToNextRoom();
         const roomCount = await llenAsync(roomsList) || 1;
-        await new Promise((r) => setTimeout(r, 5500 / roomCount));
+        await new Promise((r) => setTimeout(r, 1000 / roomCount));
     }
 }
 
