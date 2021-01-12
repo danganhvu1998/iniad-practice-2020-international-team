@@ -2,11 +2,11 @@ import { event as baseEvent } from './baseEvent';
 
 export const event = { ...baseEvent };
 
-event.name = 'KOVID IS HERE';
-event.description = 'See you after the vaccine';
-event.occorPossibility = 0.03;
+event.name = 'TYPHOON';
+event.description = 'Why that a strong wind!';
+event.occorPossibility = 0.07;
 event.affect = {
-    economy: -30, society: -20, environment: +2, income: -50,
+    economy: -5, society: 0, environment: -15, income: -2,
 };
 
 event.checkOccurCondition = (roomStat) => true;

@@ -3,7 +3,7 @@ import { event as baseEvent } from './baseEvent';
 export const event = { ...baseEvent };
 
 event.name = 'ECONOMY CRISIS';
-event.description = '1 DOLLAR IS NOW 0.75 DOLLAR ... OR WORSE';
+event.description = '1$ is now 0.75$. Oh 0.5 actually';
 event.occorPossibility = 1;
 event.affect = {
     economy: -30, society: -20, environment: 0, income: -30,
