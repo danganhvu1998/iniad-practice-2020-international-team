@@ -43,7 +43,7 @@ export const investments = [
             economy: 10,
             society: 10,
             environment: 0,
-            income: 10,
+            income: 7,
         },
     },
     {
@@ -119,7 +119,7 @@ export const investments = [
             economy: 5,
             society: 15,
             environment: 0,
-            income: 20,
+            income: 15,
         },
     },
     {
@@ -134,7 +134,7 @@ export const investments = [
             economy: 5,
             society: 5,
             environment: 10,
-            income: 15,
+            income: 10,
         },
     },
     {
@@ -178,7 +178,7 @@ export const investments = [
             economy: 10,
             society: 10,
             environment: 0,
-            income: 24,
+            income: 12,
         },
     },
     {
@@ -193,7 +193,7 @@ export const investments = [
             economy: 10,
             society: 20,
             environment: 0,
-            income: 25,
+            income: 15,
         },
     },
     {
