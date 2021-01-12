@@ -29,7 +29,7 @@ sudo groupadd docker
 sudo usermod -aG docker ubuntu
 
 # Install Nginx
-sudo apt install nginx
+sudo apt install nginx -y
 sudo cp config/nginx.conf /etc/nginx/sites-available/default
 sudo nginx -t
 sudo systemctl restart nginx
