@@ -1,8 +1,3 @@
-# This Dockerfile is still far from perfect. Until now, for some reason, when build using babel, 
-# in file: dist/middleware/auth.js:3 : invar _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault"),
-# babel is calling itself, and thus we cannot (yet) RUN npm ci --only=production
-# Current build docker image size is ~1GB
-
 # Stage 1: build node_modules
 FROM node:12 AS nodeModulesBuilder
 

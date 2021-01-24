@@ -64,6 +64,12 @@ describe('POST /api/profile/change-password', () => {
             oldPassword: 'wrongPassword',
             newPassword: adminUser.password,
         };
-        await testIfResponseAsExpectedFormat(Method.POST, '/api/profile/change-password', adminValidToken, updatePasswordInfo, ErrorCodes.ERROR_CODE_OLD_PASSWORD_NOT_CORRECT);
+        await testIfResponseAsExpectedFormat(
+            Method.POST,
+            '/api/profile/change-password',
+            adminValidToken,
+            updatePasswordInfo,
+            ErrorCodes.ERROR_CODE_OLD_PASSWORD_NOT_CORRECT,
+        );
     });
 });
