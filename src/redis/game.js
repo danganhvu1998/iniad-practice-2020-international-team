@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { customLogger } from '../helpers/logger';
 import { investments } from './constance';
 import {
     rpopAsync, lpushAsync, llenAsync, incrAsync, decrAsync,
@@ -11,7 +10,6 @@ import {
 } from './room';
 
 const roomsList = 'roomsList';
-const logger = customLogger('healthCheck');
 
 export async function addRoomCodeToList(roomCode) {
     await lpushAsync(roomsList, roomCode);
@@ -22,7 +20,7 @@ export async function getNextRoomStat() {
         const nextRoomCode = await rpopAsync(roomsList);
         const nextRoomName = getRoomName(nextRoomCode);
         const nextRoomStatus = await getRoomStat(nextRoomName);
-        logger.debug(`Check ${nextRoomName} last update: ${nextRoomStatus?.updatedAt || 0}`);
+        // logger.debug(`Check ${nextRoomName} last update: ${nextRoomStatus?.updatedAt || 0}`);
         if (new Date().getTime() - nextRoomStatus?.updatedAt < 600000) { // 10 min
             await addRoomCodeToList(nextRoomName);
             return nextRoomStatus;
@@ -42,26 +40,37 @@ export async function userNotReady(roomNameOrCode) {
     await decrAsync(getRedisRoomStatName(roomName, 'playerReadyCount'));
 }
 
-export async function userInvest(userId, roomNameOrCode, investmentId) {
+export async function userInvest(user, roomNameOrCode, investmentId) {
+    const userId = user.id;
     const roomName = getRoomName(roomNameOrCode);
-    const roomStats = await getRoomStat(roomName);
-    const status = roomStats.gameStatus || [];
+    let roomStats = await getRoomStat(roomName);
+    let status = roomStats.gameStatus || [];
     let investment = {};
     try {
         investment = investments[investmentId];
     } catch {
-        return {};
+        return false;
     }
     for (let i = 0; i < status.length; i += 1) {
         if (status[i].user.id === userId) {
             const investedList = status[i].status.invested || [];
             if (
                 _.intersection(investedList, investment.require).length !== investment.require.length
-                || investedList.includes(investmentId)
+                // || investedList.includes(investmentId)
                 || status[i].status.money < investment.cost
-            ) break;
-            await new Promise((r) => setTimeout(r, investment.time * 1000));
+            ) return false;
+            status[i].status.money -= investment.cost;
             status[i].status.invested.push(investmentId);
+            await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
+        }
+    }
+    console.log('INVESTMENT CONFIRMED', user.id, user.room.code, investmentId);
+    user.socket.emit('investConfirmation', investmentId);
+    await new Promise((r) => setTimeout(r, investment.time * 1000));
+    roomStats = await getRoomStat(roomName);
+    status = roomStats.gameStatus || [];
+    for (let i = 0; i < status.length; i += 1) {
+        if (status[i].user.id === userId) {
             status[i].status.economy *= (100.0 + investment.affect.economy) / 100;
             status[i].status.society *= (100.0 + investment.affect.society) / 100;
             status[i].status.environment *= (100.0 + investment.affect.environment) / 100;
@@ -69,6 +78,7 @@ export async function userInvest(userId, roomNameOrCode, investmentId) {
             await setRoomStatus(roomName, { gameStatus: JSON.stringify(status) });
         }
     }
-    const roomNewStats = await getRoomStat(roomName);
-    return roomNewStats;
+    console.log('INVESTMENT SUCCESSFULLY INVESTED', user.id, user.room.code, investmentId);
+    user.socket.emit('investCompletedConfirmation', investmentId);
+    return true;
 }

@@ -17,7 +17,7 @@ export function customLogger(customFile = 'job') {
                 level: 'debug',
                 name: 'file',
                 datePattern: 'yyyy-MM-DD',
-                filename: path.join(__dirname, '../../logs', `shozemi_${customFile}.log`),
+                filename: path.join(__dirname, '../../logs', `iniad_project_${customFile}.log`),
             }),
         ],
     });

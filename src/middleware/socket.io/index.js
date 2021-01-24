@@ -6,9 +6,9 @@ import {
 import { ready, notReady, invest } from './game';
 
 export function socketAction(socket) {
-    // TODO: AUTH NEW CONNECTION
     const user = authToken(socket?.handshake?.query?.token);
     user.socket = socket;
+    socket.emit('userInfo', { name: user.name, id: user.id, room: user.room });
     // USER STATUS
     socket.on('getCurrentStatus', () => { socket.emit('userInfo', { name: user.name, id: user.id, room: user.room }); });
     // CHAT
